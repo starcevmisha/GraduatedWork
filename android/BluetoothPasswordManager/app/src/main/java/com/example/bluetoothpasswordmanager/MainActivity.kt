@@ -26,10 +26,16 @@ class MainActivity : AppCompatActivity() {
         if (intent?.action == Intent.ACTION_SEND) {
             val uri = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
             Password.savePasswords(uri, this)
+            intent?.setAction(null)
+        }
+
+        val passwordsList = Password.loadPasswords(this)
+        if (passwordsList.size == 0){
+            val textView:TextView = findViewById(R.id.txt)
+            textView.setText("List is Empty")
         }
 
         listView = findViewById(R.id.recipe_list_view)
-        val passwordsList = Password.loadPasswords(this)
         val adapter = PasswordAdapter(this, passwordsList)
         listView.adapter = adapter
 
@@ -53,10 +59,21 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        if (item.itemId ==  R.id.action_delete_passwords){
+            Password.deletePasswords(this)
+
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+
+            return true
+        }
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+
     }
 
 }

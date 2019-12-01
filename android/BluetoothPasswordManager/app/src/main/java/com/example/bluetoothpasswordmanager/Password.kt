@@ -1,4 +1,5 @@
 package com.example.bluetoothpasswordmanager
+
 import com.opencsv.CSVReader
 import android.content.Context
 import android.net.Uri
@@ -10,8 +11,6 @@ import java.io.FileNotFoundException
 import org.json.JSONArray
 import java.io.File
 import java.io.FileOutputStream
-
-
 
 
 data class Password(
@@ -45,7 +44,7 @@ data class Password(
 
                 val jsonPassword = JSONObject()
                 jsonPassword.put("host", line[0])
-                jsonPassword.put("url",line[1])
+                jsonPassword.put("url", line[1])
                 jsonPassword.put("username", line[2])
                 jsonPassword.put("password", "password")
                 jsonPasswordsArray.put(jsonPassword)
@@ -65,6 +64,10 @@ data class Password(
         fun loadPasswords(context: Context): ArrayList<Password> {
             val path = context.filesDir
             val file = File(path, filename)
+
+            if (!file.exists())
+                return arrayListOf()
+
             val length = file.length().toInt()
             val bytes = ByteArray(length)
             val input = FileInputStream(file)
@@ -98,6 +101,12 @@ data class Password(
 
             passwordsList.sortBy { it.host }
             return passwordsList
+        }
+
+        fun deletePasswords(context: Context) {
+            val path = context.filesDir
+            val file = File(path, filename)
+            file.delete()
         }
     }
 }
