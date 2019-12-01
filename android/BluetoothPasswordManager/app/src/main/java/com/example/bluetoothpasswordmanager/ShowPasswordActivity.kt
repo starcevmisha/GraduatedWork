@@ -17,8 +17,8 @@ class ShowPasswordActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_HOST = "title"
         const val EXTRA_URL = "url"
-        const val EXTRA_USERNAME = "url"
-        const val EXTRA_PASSWORD = "url"
+        const val EXTRA_USERNAME = "username"
+        const val EXTRA_PASSWORD = "password"
 
         fun newIntent(context: Context, password: Password): Intent {
             val detailIntent = Intent(context, ShowPasswordActivity::class.java)

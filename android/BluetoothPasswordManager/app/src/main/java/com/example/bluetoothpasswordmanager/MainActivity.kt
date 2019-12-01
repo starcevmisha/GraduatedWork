@@ -1,12 +1,19 @@
 package com.example.bluetoothpasswordmanager
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
+import android.widget.TextView
 
+
+
+import android.net.Uri
+import android.os.Parcelable
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,9 +23,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (intent?.action == Intent.ACTION_SEND) {
+            val uri = intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as Uri
+            Password.savePasswords(uri, this)
+        }
 
         listView = findViewById(R.id.recipe_list_view)
-        val passwordsList = Password.getFromFile("passwords.json", this)
+        val passwordsList = Password.loadPasswords(this)
         val adapter = PasswordAdapter(this, passwordsList)
         listView.adapter = adapter
 
@@ -47,4 +58,5 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 }
