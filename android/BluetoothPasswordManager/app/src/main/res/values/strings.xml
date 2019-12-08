@@ -2,5 +2,8 @@
     <string name="app_name">BluetoothPasswordManager</string>
     <string name="action_settings">Settings</string>
     <string name="action_delete_passwords">Delete Passwords</string>
+    <string name="action_connect_to_blueetoth_device">Choose BT device</string>
+
+    <string name="title_activity_choose_bluetooth_device">ChooseBluetoothDeviceActivity</string>
 
 </resources>

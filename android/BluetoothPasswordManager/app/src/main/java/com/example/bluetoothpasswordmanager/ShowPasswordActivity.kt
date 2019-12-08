@@ -13,6 +13,7 @@ class ShowPasswordActivity : AppCompatActivity() {
     private lateinit var urlTextView: TextView
     private lateinit var usernameTextView: TextView
     private lateinit var passwordTextView: TextView
+    private var btService = BluetoothService()
 
     companion object {
         const val EXTRA_HOST = "title"
@@ -48,9 +49,10 @@ class ShowPasswordActivity : AppCompatActivity() {
         usernameTextView.text = extras?.getString(EXTRA_USERNAME)
 
         passwordTextView = findViewById(R.id.password_details_password)
+
         passwordTextView.text = extras?.getString(EXTRA_PASSWORD)
 
 
-
+        btService.write(extras?.getString(EXTRA_USERNAME)!!.toByteArray())
     }
 }

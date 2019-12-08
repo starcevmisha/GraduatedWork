@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:id="@+id/txt" />
     <ListView
-        android:id="@+id/recipe_list_view"
+        android:id="@+id/passwords_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
