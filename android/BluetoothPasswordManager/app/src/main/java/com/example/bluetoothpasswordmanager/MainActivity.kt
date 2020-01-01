@@ -12,16 +12,13 @@ import android.widget.TextView
 import android.net.Uri
 import android.os.Parcelable
 import kotlinx.android.synthetic.main.activity_main.*
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.app.ComponentActivity
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.widget.SearchView
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener{
 
     private lateinit var listView: ListView
+    private lateinit var searchView: SearchView
     private lateinit var btService: BluetoothService
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,10 +27,10 @@ class MainActivity : AppCompatActivity() {
 
         btService = BluetoothService()
 
-        if (!btService.IsConnectedToDevice()) {
-            val myIntent = Intent(this, ChooseBluetoothDeviceActivity::class.java)
-            this.startActivity(myIntent)
-        }
+//        if (!btService.IsConnectedToDevice()) {
+//            val chooseBtDeviceActivity = Intent(this, ChooseBluetoothDeviceActivity::class.java)
+//            this.startActivity(chooseBtDeviceActivity)
+//        }
 
         //Get passwords list from Chrome
         if (intent?.action == Intent.ACTION_SEND) {
@@ -48,16 +45,20 @@ class MainActivity : AppCompatActivity() {
             textView.setText("List is Empty")
         }
 
+        val context = this
+
         listView = findViewById(R.id.passwords_list_view)
         val adapter = PasswordAdapter(this, passwordsList)
         listView.adapter = adapter
-
-        val context = this
         listView.setOnItemClickListener { _, _, position, _ ->
-            val selectedPassword = passwordsList[position]
+            val selectedPassword = adapter.getItem(position) as Password
             val detailIntent = ShowPasswordActivity.newIntent(context, selectedPassword)
             startActivity(detailIntent)
         }
+
+
+        searchView = findViewById(R.id.search_view)
+        searchView.setOnQueryTextListener(context)
 
         setSupportActionBar(toolbar)
     }
@@ -96,4 +97,14 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+
+    override fun onQueryTextSubmit(s: String): Boolean {
+        (listView.adapter as PasswordAdapter).filter.filter(s)
+        return false
+    }
+
+    override fun onQueryTextChange(s: String): Boolean {
+        (listView.adapter as PasswordAdapter).filter.filter(s)
+        return false
+    }
 }
