@@ -9,5 +9,6 @@
     <string name="title_activity_choose_bluetooth_device">ChooseBluetoothDeviceActivity</string>
     <string name="send_login">Send Login</string>
     <string name="send_password">Send Password</string>
+    <string name="secret_password">••••••••••••••••••</string>
 
 </resources>

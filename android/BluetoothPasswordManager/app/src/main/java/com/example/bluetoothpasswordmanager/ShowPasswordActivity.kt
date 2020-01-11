@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class ShowPasswordActivity : AppCompatActivity() {
@@ -42,18 +43,14 @@ class ShowPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_detail)
 
-        hostTextView = findViewById(R.id.password_details_host)
-        hostTextView.text = extras?.getString(EXTRA_HOST)
-
-//        urlTextView = findViewById(R.id.password_details_url)
-//        urlTextView.text = extras?.getString(EXTRA_URL)
+        this.title = extras?.getString(EXTRA_HOST)
 
         usernameTextView = findViewById(R.id.password_details_username)
         usernameTextView.text = extras?.getString(EXTRA_USERNAME)
 
         passwordTextView = findViewById(R.id.password_details_password)
 
-        passwordTextView.text = "**********"//extras?.getString(EXTRA_PASSWORD)
+        passwordTextView.text = getString(R.string.secret_password)
 
 
         val sendLoginButton = findViewById<Button>(R.id.send_login_button)
@@ -64,7 +61,7 @@ class ShowPasswordActivity : AppCompatActivity() {
 
         val showPasswordButton = findViewById<Button>(R.id.show_password_button)
         showPasswordButton.setOnClickListener {
-            passwordTextView.text = if (IsPasswordShowed) "**********" else  extras?.getString(EXTRA_PASSWORD)
+            passwordTextView.text = if (IsPasswordShowed) getString(R.string.secret_password) else  extras?.getString(EXTRA_PASSWORD)
             IsPasswordShowed = !IsPasswordShowed
         }
 

@@ -18,11 +18,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.SearchView
 import android.view.inputmethod.InputMethodManager
 import android.app.KeyguardManager
-import org.jetbrains.anko.startActivity
-import androidx.core.app.ComponentActivity
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
+
 
 
 
