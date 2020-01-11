@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
+import com.google.android.material.button.MaterialButton
 
 
 class ShowPasswordActivity : AppCompatActivity() {
@@ -13,6 +15,7 @@ class ShowPasswordActivity : AppCompatActivity() {
     private lateinit var urlTextView: TextView
     private lateinit var usernameTextView: TextView
     private lateinit var passwordTextView: TextView
+    private var IsPasswordShowed: Boolean = false
     private var btService = BluetoothService()
 
     companion object {
@@ -50,9 +53,20 @@ class ShowPasswordActivity : AppCompatActivity() {
 
         passwordTextView = findViewById(R.id.password_details_password)
 
-        passwordTextView.text = extras?.getString(EXTRA_PASSWORD)
+        passwordTextView.text = "**********"//extras?.getString(EXTRA_PASSWORD)
 
 
-        btService.write(extras?.getString(EXTRA_USERNAME)!!.toByteArray())
+        val sendLoginButton = findViewById<Button>(R.id.send_login_button)
+        sendLoginButton.setOnClickListener { btService.write(extras?.getString(EXTRA_USERNAME)!!.toByteArray()) }
+
+        val sendPasswordButton = findViewById<Button>(R.id.send_password_button)
+        sendPasswordButton.setOnClickListener { btService.write(extras?.getString(EXTRA_PASSWORD)!!.toByteArray()) }
+
+        val showPasswordButton = findViewById<Button>(R.id.show_password_button)
+        showPasswordButton.setOnClickListener {
+            passwordTextView.text = if (IsPasswordShowed) "**********" else  extras?.getString(EXTRA_PASSWORD)
+            IsPasswordShowed = !IsPasswordShowed
+        }
+
     }
 }

@@ -7,5 +7,7 @@
     <string name="action_connect_to_blueetoth_device">Choose BT device</string>
 
     <string name="title_activity_choose_bluetooth_device">ChooseBluetoothDeviceActivity</string>
+    <string name="send_login">Send Login</string>
+    <string name="send_password">Send Password</string>
 
 </resources>
