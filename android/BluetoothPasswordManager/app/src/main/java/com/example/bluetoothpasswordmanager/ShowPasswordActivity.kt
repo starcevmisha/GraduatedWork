@@ -45,8 +45,8 @@ class ShowPasswordActivity : AppCompatActivity() {
         hostTextView = findViewById(R.id.password_details_host)
         hostTextView.text = extras?.getString(EXTRA_HOST)
 
-        urlTextView = findViewById(R.id.password_details_url)
-        urlTextView.text = extras?.getString(EXTRA_URL)
+//        urlTextView = findViewById(R.id.password_details_url)
+//        urlTextView.text = extras?.getString(EXTRA_URL)
 
         usernameTextView = findViewById(R.id.password_details_username)
         usernameTextView.text = extras?.getString(EXTRA_USERNAME)

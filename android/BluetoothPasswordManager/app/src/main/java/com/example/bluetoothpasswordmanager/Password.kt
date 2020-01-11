@@ -42,14 +42,14 @@ data class Password(
             var line: Array<String>? = csvReader.readNext()
             while (line != null) {
 
-                if (line[0].isNullOrEmpty())
-                    continue
-                val jsonPassword = JSONObject()
-                jsonPassword.put("host", line[0])
-                jsonPassword.put("url", line[1])
-                jsonPassword.put("username", line[2])
-                jsonPassword.put("password", "password")
-                jsonPasswordsArray.put(jsonPassword)
+                if (!line[0].isEmpty()) {
+                    val jsonPassword = JSONObject()
+                    jsonPassword.put("host", line[0])
+                    jsonPassword.put("url", line[1])
+                    jsonPassword.put("username", line[2])
+                    jsonPassword.put("password", "password")
+                    jsonPasswordsArray.put(jsonPassword)
+                }
 
                 line = csvReader.readNext()
             }

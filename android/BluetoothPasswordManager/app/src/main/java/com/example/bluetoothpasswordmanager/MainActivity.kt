@@ -1,5 +1,6 @@
 package com.example.bluetoothpasswordmanager
 
+import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -16,13 +17,14 @@ import android.os.Parcelable
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.SearchView
 import android.view.inputmethod.InputMethodManager
+import android.app.KeyguardManager
+import org.jetbrains.anko.startActivity
 import androidx.core.app.ComponentActivity
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.widget.Toast
-import androidx.core.view.MenuItemCompat.setOnActionExpandListener
-import org.jetbrains.anko.toast
+
+
 
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener{
@@ -31,14 +33,32 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener{
     private lateinit var searchView: SearchView
     private lateinit var btService: BluetoothService
 
+    companion object {
+        private var isAuth = false
+        private var skipBtConnectedDeviseCheck = false;
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btService = BluetoothService()
+        if (!isAuth) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                val km = this.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                val intent = km.createConfirmDeviceCredentialIntent(
+                    resources.getString(R.string.app_name),
+                    "Enter your password to enter this App."
+                )
 
-        if (!btService.IsConnectedToDevice()) {
+                // launch the intent
+                startActivityForResult(intent, 1234)
+                return
+            }
+        }
+
+        btService = BluetoothService()
+        if (!skipBtConnectedDeviseCheck && !btService.IsConnectedToDevice()) {
+            skipBtConnectedDeviseCheck = true
             val chooseBtDeviceActivity = Intent(this, ChooseBluetoothDeviceActivity::class.java)
             this.startActivity(chooseBtDeviceActivity)
         }
@@ -68,6 +88,23 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener{
         }
 
         setSupportActionBar(toolbar)
+
+    }
+
+    // call back when password is correct
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1234) {
+            if (resultCode == Activity.RESULT_OK) {
+                isAuth = true
+                //restart activity
+                finish()
+                startActivity(intent)
+            } else {
+                finish()
+            }
+
+
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -116,14 +153,15 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener{
         }
 
         return when (item.itemId) {
-            R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
 
     }
 
     override fun onDestroy() {
-        btService.cansel()
+        if (::btService.isInitialized){
+            btService.cansel()
+        }
         super.onDestroy()
     }
 
