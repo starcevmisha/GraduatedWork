@@ -57,7 +57,7 @@ class ChooseBluetoothDeviceActivity : AppCompatActivity() {
         listView.setOnItemClickListener { _, _, position, _ ->
             toast("Try to connect to " + deviceList[position])
             doAsync {
-                var result = btService.TryConnectToDevice(bluetoothAdapter.getRemoteDevice(deviceList[position].address))
+                val result = btService.TryConnectToDevice(bluetoothAdapter.getRemoteDevice(deviceList[position].address), true)
                 uiThread {
                     if (result) {
                         finish()
